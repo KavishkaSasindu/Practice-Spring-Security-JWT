@@ -4,6 +4,7 @@ import com.example.SpringSecurityDemoJWT.model.UserModel;
 import com.example.SpringSecurityDemoJWT.service.UserService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,20 @@ public class UserController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.registerUser(userModel));
+    }
+
+//    login
+    @PostMapping("/login")
+    public ResponseEntity<?> logIn(@RequestBody UserModel userModel) {
+        try{
+            if(userModel == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username or password is null");
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(userService.logInUser(userModel));
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
     }
 
 }
